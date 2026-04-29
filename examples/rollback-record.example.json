@@ -1,0 +1,23 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "RollbackRecord",
+  "metadata": {
+    "recordId": "ledger-record-rollback-demo-001",
+    "recordKind": "rollback",
+    "createdAt": "2026-04-29T00:00:00Z"
+  },
+  "spec": {
+    "surfaceRef": "surface://language/summarization",
+    "modelRef": "model://local/small-language@0.1.0",
+    "serviceRef": "service://socioprophet/model-router/default@0.1.0",
+    "datasetRefs": [],
+    "adapterRefs": [],
+    "evalRefs": [],
+    "guardrailDecisionRefs": [],
+    "routeDecisionRefs": [],
+    "promotionState": "rollback-ready",
+    "rollbackRef": "rollback://model/local-small-language@0.1.0",
+    "evidenceRefs": ["evidence://model-governance-ledger/demo/rollback-001"],
+    "restoresPromotionRef": "ledger-record-promotion-demo-001"
+  }
+}
