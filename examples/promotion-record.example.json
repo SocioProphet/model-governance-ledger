@@ -1,0 +1,24 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "PromotionRecord",
+  "metadata": {
+    "recordId": "ledger-record-promotion-demo-001",
+    "recordKind": "promotion",
+    "createdAt": "2026-04-29T00:00:00Z"
+  },
+  "spec": {
+    "surfaceRef": "surface://language/summarization",
+    "modelRef": "model://local/small-language@0.1.0",
+    "serviceRef": "service://socioprophet/model-router/default@0.1.0",
+    "datasetRefs": ["dataset://demo/summarization-eval@0.1.0"],
+    "adapterRefs": [],
+    "evalRefs": ["eval://demo/summarization-quality@0.1.0"],
+    "guardrailDecisionRefs": ["guardrail-decision-demo-001"],
+    "routeDecisionRefs": ["route-decision-demo-001"],
+    "promotionState": "approved",
+    "rollbackRef": "rollback://model/local-small-language@0.1.0",
+    "evidenceRefs": ["evidence://model-router/demo/request-001", "evidence://guardrail-fabric/demo/input-001"],
+    "approvedByRef": "human://socioprophet/release-authority",
+    "sourceosCarryRef": "sourceos-carry://model/local-small-language@0.1.0"
+  }
+}
