@@ -1,0 +1,22 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "RouteEvidenceRecord",
+  "metadata": {
+    "recordId": "ledger-record-route-demo-001",
+    "recordKind": "route-evidence",
+    "createdAt": "2026-04-29T00:00:00Z"
+  },
+  "spec": {
+    "surfaceRef": "surface://language/summarization",
+    "modelRef": "model://local/small-language@0.1.0",
+    "serviceRef": "service://socioprophet/model-router/default@0.1.0",
+    "datasetRefs": [],
+    "adapterRefs": [],
+    "evalRefs": ["eval://demo/route-policy-check@0.1.0"],
+    "guardrailDecisionRefs": ["guardrail-decision-demo-001"],
+    "routeDecisionRefs": ["route-decision-demo-001"],
+    "promotionState": "candidate",
+    "rollbackRef": "rollback://route/model-router-demo@0.1.0",
+    "evidenceRefs": ["evidence://model-router/demo/request-001"]
+  }
+}
