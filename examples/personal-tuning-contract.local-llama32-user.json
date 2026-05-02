@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "v0.1",
+  "kind": "PersonalTuningContract",
+  "contractId": "urn:socioprophet:personal-tuning-contract:demo-user-local-llama32",
+  "subject": {
+    "userRef": "urn:socioprophet:user:demo-user",
+    "tenantRef": "urn:socioprophet:tenant:demo-tenant",
+    "workspaceRef": "urn:socioprophet:workspace:demo-workspace",
+    "deviceRef": "urn:srcos:device:demo-laptop"
+  },
+  "baseModelRef": "urn:srcos:model-profile:local-llama32-1b",
+  "tuningTarget": {
+    "targetType": "lora",
+    "artifactRef": "urn:socioprophet:model-adapter:demo-user-local-llama32-lora",
+    "storageClass": "local-only"
+  },
+  "consent": {
+    "status": "granted",
+    "signedIntentRef": "urn:socios:intent:demo-user-local-model-tuning",
+    "proofOfLifeRef": "urn:socios:proof-of-life:demo-user-local-device",
+    "scope": "workspace",
+    "expiresAt": "2026-12-31T23:59:59Z",
+    "revocable": true,
+    "notes": "Example only. Real contracts require user-visible consent and revocation controls."
+  },
+  "dataBoundary": {
+    "allowedSources": [
+      "sourceos-office://demo-workspace/output",
+      "memory-mesh://demo-user/approved-context-packs",
+      "prophet-workspace://demo-workspace/user-approved-artifacts"
+    ],
+    "deniedSources": [
+      "whole-home",
+      "security-material-directories",
+      "browser-profiles",
+      "mail-raw-store",
+      "notes-raw-db",
+      "photos-library",
+      "voice-memos-raw-store",
+      "cloud-account-material",
+      "token-stores"
+    ],
+    "retention": "until-revoked",
+    "ttlDays": null,
+    "egressPolicy": "local-only",
+    "redactionRequired": true
+  },
+  "trainingScope": {
+    "method": "lora",
+    "objectives": [
+      "personal writing style adaptation",
+      "workspace-specific summarization preferences",
+      "office artifact drafting preferences",
+      "local routing preference calibration"
+    ],
+    "maxExamples": 5000,
+    "requiresHumanReview": true,
+    "forbiddenObjectives": [
+      "sensitive material memorization",
+      "policy control circumvention",
+      "unauthorized impersonation",
+      "training on denied app databases"
+    ]
+  },
+  "evaluation": {
+    "evalPlanRef": "urn:socioprophet:eval-plan:personal-local-model-default",
+    "requiredReceipts": [
+      "dataset-lineage",
+      "privacy-redaction",
+      "style-regression",
+      "policy-refusal-regression",
+      "office-artifact-quality"
+    ],
+    "promotionThresholdRef": "urn:socioprophet:promotion-threshold:personal-local-adapter-v0",
+    "regressionChecks": [
+      "no-sensitive-material-regurgitation",
+      "no-denied-source-leakage",
+      "no-tool-use-escalation",
+      "local-only-routing-respected"
+    ]
+  },
+  "promotion": {
+    "defaultState": "personal-only",
+    "requiresApproval": true,
+    "promotionReceiptRef": null,
+    "modelRouterBindingRef": "urn:socioprophet:model-router-binding:demo-user-local-llama32"
+  },
+  "revocation": {
+    "supported": true,
+    "deleteTrainingData": true,
+    "disableTunedArtifact": true,
+    "retainAuditOnly": true,
+    "revocationReceiptRef": null
+  },
+  "orchestration": {
+    "orchestrator": "SociOS-Linux/socios",
+    "optInRef": "urn:socios:opt-in:demo-user-personal-tuning",
+    "jobRef": null,
+    "agentPlaneRunRef": null
+  },
+  "evidence": {
+    "datasetLineageRef": null,
+    "trainingReceiptRef": null,
+    "evalReceiptRef": null,
+    "factsheetRef": null
+  }
+}

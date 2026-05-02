@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/model-governance/personal-tuning-contract.schema.json",
+  "title": "PersonalTuningContract",
+  "description": "Per-user consent, data boundary, tuning scope, evaluation, promotion, and revocation contract for personal model tuning.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractId",
+    "subject",
+    "baseModelRef",
+    "tuningTarget",
+    "consent",
+    "dataBoundary",
+    "trainingScope",
+    "evaluation",
+    "promotion",
+    "revocation",
+    "orchestration"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "v0.1" },
+    "kind": { "const": "PersonalTuningContract" },
+    "contractId": { "type": "string", "pattern": "^urn:socioprophet:personal-tuning-contract:" },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userRef", "tenantRef", "workspaceRef"],
+      "properties": {
+        "userRef": { "type": "string" },
+        "tenantRef": { "type": "string" },
+        "workspaceRef": { "type": "string" },
+        "deviceRef": { "type": ["string", "null"] }
+      }
+    },
+    "baseModelRef": { "type": "string", "description": "SourceOS LocalModelProfile, hosted model, or signed model reference." },
+    "tuningTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetType", "artifactRef"],
+      "properties": {
+        "targetType": { "type": "string", "enum": ["adapter", "lora", "prompt-pack", "reranker-profile", "embedding-profile", "full-model-copy"] },
+        "artifactRef": { "type": "string" },
+        "storageClass": { "type": "string", "enum": ["local-only", "tenant-private", "encrypted-cloud", "release-candidate"] }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "signedIntentRef", "scope", "expiresAt", "revocable"],
+      "properties": {
+        "status": { "type": "string", "enum": ["granted", "pending", "revoked", "expired"] },
+        "signedIntentRef": { "type": "string" },
+        "proofOfLifeRef": { "type": ["string", "null"] },
+        "scope": { "type": "string", "enum": ["single-workroom", "workspace", "device", "tenant", "custom"] },
+        "expiresAt": { "type": "string" },
+        "revocable": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "dataBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowedSources", "deniedSources", "retention", "egressPolicy"],
+      "properties": {
+        "allowedSources": { "type": "array", "items": { "type": "string" } },
+        "deniedSources": { "type": "array", "items": { "type": "string" } },
+        "retention": { "type": "string", "enum": ["ephemeral", "until-revoked", "fixed-ttl", "retain-evidence-only"] },
+        "ttlDays": { "type": ["integer", "null"], "minimum": 1 },
+        "egressPolicy": { "type": "string", "enum": ["local-only", "tenant-private", "encrypted-allowed", "external-denied"] },
+        "redactionRequired": { "type": "boolean", "default": true }
+      }
+    },
+    "trainingScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "objectives", "maxExamples", "requiresHumanReview"],
+      "properties": {
+        "method": { "type": "string", "enum": ["lora", "qlora", "dpo", "sft", "prompt-tuning", "retrieval-profile", "embedding-adapter", "none"] },
+        "objectives": { "type": "array", "items": { "type": "string" } },
+        "maxExamples": { "type": "integer", "minimum": 1 },
+        "requiresHumanReview": { "type": "boolean" },
+        "forbiddenObjectives": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evalPlanRef", "requiredReceipts", "promotionThresholdRef"],
+      "properties": {
+        "evalPlanRef": { "type": "string" },
+        "requiredReceipts": { "type": "array", "items": { "type": "string" } },
+        "promotionThresholdRef": { "type": "string" },
+        "regressionChecks": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defaultState", "requiresApproval", "promotionReceiptRef"],
+      "properties": {
+        "defaultState": { "type": "string", "enum": ["not-promoted", "personal-only", "workspace-candidate", "tenant-candidate", "rejected"] },
+        "requiresApproval": { "type": "boolean" },
+        "promotionReceiptRef": { "type": ["string", "null"] },
+        "modelRouterBindingRef": { "type": ["string", "null"] }
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported", "deleteTrainingData", "disableTunedArtifact", "retainAuditOnly"],
+      "properties": {
+        "supported": { "type": "boolean" },
+        "deleteTrainingData": { "type": "boolean" },
+        "disableTunedArtifact": { "type": "boolean" },
+        "retainAuditOnly": { "type": "boolean" },
+        "revocationReceiptRef": { "type": ["string", "null"] }
+      }
+    },
+    "orchestration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["orchestrator", "optInRef", "jobRef"],
+      "properties": {
+        "orchestrator": { "type": "string", "enum": ["SociOS-Linux/socios", "manual", "other"] },
+        "optInRef": { "type": "string" },
+        "jobRef": { "type": ["string", "null"] },
+        "agentPlaneRunRef": { "type": ["string", "null"] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "datasetLineageRef": { "type": ["string", "null"] },
+        "trainingReceiptRef": { "type": ["string", "null"] },
+        "evalReceiptRef": { "type": ["string", "null"] },
+        "factsheetRef": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
