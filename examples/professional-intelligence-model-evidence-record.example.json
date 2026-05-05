@@ -1,0 +1,39 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "ModelEvidenceRecord",
+  "metadata": {
+    "recordId": "ledger://professional-intelligence/model-evidence/review-packet",
+    "recordKind": "model-evidence",
+    "createdAt": "2026-05-04T21:46:00Z"
+  },
+  "spec": {
+    "surfaceRef": "surface://professional-intelligence/client-opportunity-review",
+    "serviceRef": "agentplane://runs/pi-demo-0001",
+    "modelRef": "route://local/small-reasoner",
+    "datasetRefs": [
+      "context-pack://pi-demo-0001",
+      "search-packet://pi-demo-0001"
+    ],
+    "adapterRefs": [
+      "adapter://memory-mesh/context-pack-read",
+      "adapter://sherlock-search/search-packet-read"
+    ],
+    "evalRefs": [
+      "eval://professional-intelligence/evidence-required",
+      "eval://professional-intelligence/source-citation-required"
+    ],
+    "guardrailDecisionRefs": [
+      "guardrail-pack://professional-intelligence/gate-3-demo"
+    ],
+    "routeDecisionRefs": [
+      "route-decision://pi-demo-0001/review-packet"
+    ],
+    "promotionState": "candidate",
+    "rollbackRef": "rollback://professional-intelligence/review-packet/current",
+    "evidenceRefs": [
+      "evidence://agentplane/pi-demo-0001/workflow-step",
+      "evidence://model-router/pi-demo-0001/review-packet",
+      "evidence://guardrail-fabric/professional-intelligence/gate-3-demo"
+    ]
+  }
+}
