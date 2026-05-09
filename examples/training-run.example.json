@@ -1,0 +1,20 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "TrainingRun",
+  "metadata": {
+    "recordId": "ledger://model-governance/training-run/text-classifier-2026-05-01",
+    "createdAt": "2026-05-01T08:00:00Z"
+  },
+  "spec": {
+    "modelRef": "model://socioprophet/text-classifier@2.4.0",
+    "datasetManifestRef": "dataset-manifest://socioprophet/support-intents@2026-04-28",
+    "splitManifestRef": "split-manifest://socioprophet/support-intents/train-val-test@2026-04-28",
+    "modelCardRef": "model-card://socioprophet/text-classifier@2.4.0",
+    "evaluationReportRefs": [
+      "evaluation-report://socioprophet/text-classifier@2.4.0/intent-claims"
+    ],
+    "policyDecisionRefs": [
+      "policy-decision://guardrail-fabric/model-training/text-classifier-2.4.0/approved"
+    ]
+  }
+}

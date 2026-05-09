@@ -25,6 +25,30 @@ Validation:
 python3 tools/validate_personal_tuning_contracts.py
 ```
 
+## Governed-intelligence model lineage contracts
+
+Reference document:
+
+```text
+docs/MODEL_LINEAGE_INFERENCE_LEARNING.md
+```
+
+Fixtures:
+
+```text
+examples/training-run.example.json
+examples/inference-trace.example.json
+examples/drift-event.example.json
+examples/learning-event.example.json
+```
+
+Validation:
+
+```bash
+make validate
+make test
+```
+
 ## Boundary
 
 | Layer | Responsibility |
@@ -33,6 +57,11 @@ python3 tools/validate_personal_tuning_contracts.py
 | `SociOS-Linux/socios` | Opt-in orchestration for training/tuning workflows. |
 | `SocioProphet/model-governance-ledger` | Consent, dataset lineage, eval receipts, promotion, rollback, revocation, and factsheets. |
 | `SocioProphet/model-router` | Routes to base local model, personal adapter/model, or hosted fallback under policy. |
+| `SocioProphet/sherlock-search` | Produces retrieval/evidence references used by explanation traces. |
+| `SocioProphet/holmes` | Produces reasoning/explanation trace references consumed by inference traces. |
+| `SocioProphet/guardrail-fabric` | Produces policy decisions that gate claim admission and model lifecycle actions. |
+| `SocioProphet/sociosphere` | Owns claims and admission flow; consumes model outputs as proposals only. |
+| `SocioProphet/agentplane` | Emits workflow and receipt anchors referenced by traces and governance records. |
 
 ## Invariants
 
