@@ -177,9 +177,13 @@ def validate_inference_trace(path: Path) -> int:
             return fail(f"{path.name}: {field} must be a non-empty list")
     if not isinstance(spec["scores"], dict) or not spec["scores"]:
         return fail(f"{path.name}: scores must be a non-empty object")
-    if not isinstance(spec["confidence"], (int, float)) or not 0.0 <= spec["confidence"] <= 1.0:
+    if not isinstance(spec["confidence"], (int, float)):
+        return fail(f"{path.name}: confidence must be numeric")
+    if not 0.0 <= spec["confidence"] <= 1.0:
         return fail(f"{path.name}: confidence must be between 0 and 1")
-    if not isinstance(spec["uncertainty"], (int, float)) or not 0.0 <= spec["uncertainty"] <= 1.0:
+    if not isinstance(spec["uncertainty"], (int, float)):
+        return fail(f"{path.name}: uncertainty must be numeric")
+    if not 0.0 <= spec["uncertainty"] <= 1.0:
         return fail(f"{path.name}: uncertainty must be between 0 and 1")
     output = spec["modelOutput"]
     if not isinstance(output, dict):
