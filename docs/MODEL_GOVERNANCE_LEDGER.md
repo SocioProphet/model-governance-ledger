@@ -25,6 +25,10 @@ SourceOS must not promote models, replace service artifacts, or own mutable mode
 - `PromotionRecord`
 - `RollbackRecord`
 
+## Governed-intelligence lineage contracts
+
+See `docs/MODEL_LINEAGE_INFERENCE_LEARNING.md` for `TrainingRun`, `InferenceTrace`, `DriftEvent`, and `LearningEvent` responsibilities and fixtures.
+
 ## Validation
 
 ```bash

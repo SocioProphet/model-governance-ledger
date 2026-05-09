@@ -33,3 +33,19 @@ def test_rollback_record_restores_promotion_record() -> None:
     assert record["kind"] == "RollbackRecord"
     assert record["spec"]["promotionState"] == "rollback-ready"
     assert record["spec"]["restoresPromotionRef"] == "ledger-record-promotion-demo-001"
+
+
+def test_inference_trace_model_output_is_proposal_only() -> None:
+    trace = json.loads((ROOT / "examples" / "inference-trace.example.json").read_text(encoding="utf-8"))
+    assert trace["kind"] == "InferenceTrace"
+    assert trace["spec"]["modelOutput"]["admissionStatus"] == "proposal"
+    assert trace["spec"]["policyDecisionRefs"][0].endswith("/review_required")
+
+
+def test_learning_event_links_drift_and_training_run() -> None:
+    learning = json.loads((ROOT / "examples" / "learning-event.example.json").read_text(encoding="utf-8"))
+    drift = json.loads((ROOT / "examples" / "drift-event.example.json").read_text(encoding="utf-8"))
+    training = json.loads((ROOT / "examples" / "training-run.example.json").read_text(encoding="utf-8"))
+    assert learning["kind"] == "LearningEvent"
+    assert learning["spec"]["driftEventRef"] == drift["metadata"]["recordId"]
+    assert learning["spec"]["trainingRunRef"] == training["metadata"]["recordId"]

@@ -1,0 +1,17 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "DriftEvent",
+  "metadata": {
+    "recordId": "ledger://model-governance/drift-event/text-classifier-2026-05-01",
+    "createdAt": "2026-05-01T10:00:00Z"
+  },
+  "spec": {
+    "inferenceTraceRef": "ledger://model-governance/inference-trace/support-intent-req-1842",
+    "signalType": "calibration",
+    "signalValue": 0.22,
+    "triggerRef": "monitor://model-governance/calibration-error/text-classifier@2.4.0",
+    "policyDecisionRefs": [
+      "policy-decision://guardrail-fabric/model-monitoring/text-classifier-2.4.0/investigate"
+    ]
+  }
+}

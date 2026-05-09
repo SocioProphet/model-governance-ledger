@@ -16,6 +16,12 @@ EXAMPLES = [
     "professional-intelligence-promotion-record.example.json",
     "professional-intelligence-rollback-record.example.json",
 ]
+MODEL_GOVERNANCE_EXAMPLES = [
+    "training-run.example.json",
+    "inference-trace.example.json",
+    "drift-event.example.json",
+    "learning-event.example.json",
+]
 REQUIRED_SPEC_FIELDS = {
     "surfaceRef",
     "serviceRef",
@@ -109,15 +115,169 @@ def validate_professional_intelligence_links() -> int:
     return 0
 
 
+def validate_training_run(path: Path) -> int:
+    doc = load(path)
+    if doc.get("kind") != "TrainingRun":
+        return fail(f"{path.name}: kind invalid")
+    metadata = doc.get("metadata", {})
+    if not metadata.get("recordId") or not metadata.get("createdAt"):
+        return fail(f"{path.name}: metadata.recordId and createdAt required")
+    spec = doc.get("spec", {})
+    required_fields = {
+        "datasetManifestRef",
+        "splitManifestRef",
+        "modelCardRef",
+        "evaluationReportRefs",
+        "policyDecisionRefs",
+    }
+    missing = sorted(required_fields - set(spec))
+    if missing:
+        return fail(f"{path.name}: missing spec fields {missing}")
+    if not isinstance(spec["evaluationReportRefs"], list) or not spec["evaluationReportRefs"]:
+        return fail(f"{path.name}: evaluationReportRefs must be a non-empty list")
+    if not isinstance(spec["policyDecisionRefs"], list) or not spec["policyDecisionRefs"]:
+        return fail(f"{path.name}: policyDecisionRefs must be a non-empty list")
+    return 0
+
+
+def validate_inference_trace(path: Path) -> int:
+    doc = load(path)
+    if doc.get("kind") != "InferenceTrace":
+        return fail(f"{path.name}: kind invalid")
+    metadata = doc.get("metadata", {})
+    if not metadata.get("recordId") or not metadata.get("createdAt"):
+        return fail(f"{path.name}: metadata.recordId and createdAt required")
+    spec = doc.get("spec", {})
+    required_fields = {
+        "inputAnchorRef",
+        "modelRefs",
+        "modelVersions",
+        "scores",
+        "explanationRefs",
+        "outputClaimRefs",
+        "confidence",
+        "uncertainty",
+        "policyDecisionRefs",
+        "claimClassEvaluations",
+        "modelOutput",
+    }
+    missing = sorted(required_fields - set(spec))
+    if missing:
+        return fail(f"{path.name}: missing spec fields {missing}")
+    list_fields = {
+        "modelRefs",
+        "modelVersions",
+        "explanationRefs",
+        "outputClaimRefs",
+        "policyDecisionRefs",
+        "claimClassEvaluations",
+    }
+    for field in list_fields:
+        if not isinstance(spec[field], list) or not spec[field]:
+            return fail(f"{path.name}: {field} must be a non-empty list")
+    if not isinstance(spec["scores"], dict) or not spec["scores"]:
+        return fail(f"{path.name}: scores must be a non-empty object")
+    if not isinstance(spec["confidence"], (int, float)):
+        return fail(f"{path.name}: confidence must be numeric")
+    if not 0.0 <= spec["confidence"] <= 1.0:
+        return fail(f"{path.name}: confidence must be between 0 and 1")
+    if not isinstance(spec["uncertainty"], (int, float)):
+        return fail(f"{path.name}: uncertainty must be numeric")
+    if not 0.0 <= spec["uncertainty"] <= 1.0:
+        return fail(f"{path.name}: uncertainty must be between 0 and 1")
+    output = spec["modelOutput"]
+    if not isinstance(output, dict):
+        return fail(f"{path.name}: modelOutput must be an object")
+    if output.get("admissionStatus") != "proposal":
+        return fail(f"{path.name}: model outputs must remain proposal only")
+    for item in spec["claimClassEvaluations"]:
+        if not isinstance(item, dict) or not item.get("claimClassRef") or not item.get("evaluationReportRef"):
+            return fail(f"{path.name}: claimClassEvaluations items require claimClassRef and evaluationReportRef")
+    return 0
+
+
+def validate_drift_event(path: Path) -> int:
+    doc = load(path)
+    if doc.get("kind") != "DriftEvent":
+        return fail(f"{path.name}: kind invalid")
+    metadata = doc.get("metadata", {})
+    if not metadata.get("recordId") or not metadata.get("createdAt"):
+        return fail(f"{path.name}: metadata.recordId and createdAt required")
+    spec = doc.get("spec", {})
+    required_fields = {"inferenceTraceRef", "signalType", "signalValue", "policyDecisionRefs"}
+    missing = sorted(required_fields - set(spec))
+    if missing:
+        return fail(f"{path.name}: missing spec fields {missing}")
+    if spec.get("signalType") not in {"drift", "calibration"}:
+        return fail(f"{path.name}: signalType must be drift or calibration")
+    if not isinstance(spec["policyDecisionRefs"], list) or not spec["policyDecisionRefs"]:
+        return fail(f"{path.name}: policyDecisionRefs must be a non-empty list")
+    return 0
+
+
+def validate_learning_event(path: Path) -> int:
+    doc = load(path)
+    if doc.get("kind") != "LearningEvent":
+        return fail(f"{path.name}: kind invalid")
+    metadata = doc.get("metadata", {})
+    if not metadata.get("recordId") or not metadata.get("createdAt"):
+        return fail(f"{path.name}: metadata.recordId and createdAt required")
+    spec = doc.get("spec", {})
+    required_fields = {
+        "inferenceTraceRef",
+        "driftEventRef",
+        "trainingRunRef",
+        "datasetManifestRef",
+        "policyDecisionRefs",
+    }
+    missing = sorted(required_fields - set(spec))
+    if missing:
+        return fail(f"{path.name}: missing spec fields {missing}")
+    if not isinstance(spec["policyDecisionRefs"], list) or not spec["policyDecisionRefs"]:
+        return fail(f"{path.name}: policyDecisionRefs must be a non-empty list")
+    return 0
+
+
+def validate_model_governance_links() -> int:
+    training = load(ROOT / "examples" / "training-run.example.json")
+    inference = load(ROOT / "examples" / "inference-trace.example.json")
+    drift = load(ROOT / "examples" / "drift-event.example.json")
+    learning = load(ROOT / "examples" / "learning-event.example.json")
+    if drift["spec"]["inferenceTraceRef"] != inference["metadata"]["recordId"]:
+        return fail("drift-event inferenceTraceRef must reference inference trace record")
+    if learning["spec"]["inferenceTraceRef"] != inference["metadata"]["recordId"]:
+        return fail("learning-event inferenceTraceRef must reference inference trace record")
+    if learning["spec"]["driftEventRef"] != drift["metadata"]["recordId"]:
+        return fail("learning-event driftEventRef must reference drift-event record")
+    if learning["spec"]["trainingRunRef"] != training["metadata"]["recordId"]:
+        return fail("learning-event trainingRunRef must reference training-run record")
+    return 0
+
+
 def main() -> int:
     for name in EXAMPLES:
         rc = validate_record(ROOT / "examples" / name)
         if rc:
             return rc
+    rc = validate_training_run(ROOT / "examples" / "training-run.example.json")
+    if rc:
+        return rc
+    rc = validate_inference_trace(ROOT / "examples" / "inference-trace.example.json")
+    if rc:
+        return rc
+    rc = validate_drift_event(ROOT / "examples" / "drift-event.example.json")
+    if rc:
+        return rc
+    rc = validate_learning_event(ROOT / "examples" / "learning-event.example.json")
+    if rc:
+        return rc
     rc = validate_professional_intelligence_links()
     if rc:
         return rc
-    print(f"OK: validated {len(EXAMPLES)} ledger examples")
+    rc = validate_model_governance_links()
+    if rc:
+        return rc
+    print(f"OK: validated {len(EXAMPLES) + len(MODEL_GOVERNANCE_EXAMPLES)} ledger examples")
     return 0
 
 
