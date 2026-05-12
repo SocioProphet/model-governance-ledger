@@ -1,0 +1,48 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "ModelEvidenceRecord",
+  "metadata": {
+    "recordId": "ledger-record-trustops-art-smoke-001",
+    "recordKind": "model-evidence",
+    "createdAt": "2026-05-05T00:00:00Z"
+  },
+  "spec": {
+    "surfaceRef": "surface://trustops/robustness",
+    "modelRef": "model.demo-classifier@0.1.0",
+    "serviceRef": "service://prophet-platform/trustops-art-runner@0.1.0",
+    "datasetRefs": [
+      "dataset-risk.synthetic-art-smoke"
+    ],
+    "adapterRefs": [],
+    "evalRefs": [
+      "trustops.art-smoke.demo-classifier.ledger-fixture"
+    ],
+    "guardrailDecisionRefs": [
+      "trustgate.platform-default.robustness:allow"
+    ],
+    "routeDecisionRefs": [
+      "route://model-router/trustops-art-smoke/allow"
+    ],
+    "promotionState": "candidate",
+    "rollbackRef": "rollback://trustops/demo-classifier/art-smoke",
+    "evidenceRefs": [
+      "trustops.art-smoke.demo-classifier.ledger-fixture",
+      "artifact://trustops/art-smoke/demo-classifier/receipt.json"
+    ],
+    "trustops": {
+      "receiptRefs": [
+        "trustops.art-smoke.demo-classifier.ledger-fixture"
+      ],
+      "gateRefs": [
+        "trustgate.platform-default.robustness"
+      ],
+      "receiptTypes": [
+        "robustness"
+      ],
+      "decision": "allow",
+      "residualRisk": "low",
+      "rawDataExported": false,
+      "redactionPolicy": "metrics-only"
+    }
+  }
+}
