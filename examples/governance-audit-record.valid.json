@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1",
+  "kind": "governance_audit_record",
+  "audit_id": "audit-synthetic-001",
+  "subject_ref": "subject:record-event-instance-001",
+  "policy_decision_ref": "policy:decision:synthetic-001",
+  "source_quality": "confirmed_bibliographic",
+  "implementation_safe": true,
+  "trace_ref": "trace:synthetic-001",
+  "result": "recorded_only",
+  "provenance_refs": [
+    "SocioProphet/sherlock-search#58:valid.confirmed-bibliographic",
+    "SocioProphet/ontogenesis#103:corpus-event-semantics.valid.ttl"
+  ]
+}

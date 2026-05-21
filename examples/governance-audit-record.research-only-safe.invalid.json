@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1",
+  "kind": "governance_audit_record",
+  "audit_id": "audit-synthetic-invalid-002",
+  "subject_ref": "subject:record-event-instance-003",
+  "policy_decision_ref": "policy:decision:synthetic-002",
+  "source_quality": "plausible_needs_source",
+  "implementation_safe": true,
+  "trace_ref": "trace:synthetic-003",
+  "result": "recorded_only",
+  "provenance_refs": [
+    "SocioProphet/sherlock-search#58:research-only-fixture"
+  ]
+}
