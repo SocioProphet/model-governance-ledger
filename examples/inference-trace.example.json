@@ -1,0 +1,45 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "InferenceTrace",
+  "metadata": {
+    "recordId": "ledger://model-governance/inference-trace/support-intent-req-1842",
+    "createdAt": "2026-05-01T09:00:00Z"
+  },
+  "spec": {
+    "inputAnchorRef": "anchor://agentplane/request/support-intent-req-1842",
+    "modelRefs": [
+      "model://socioprophet/text-classifier@2.4.0"
+    ],
+    "modelVersions": [
+      "2.4.0"
+    ],
+    "scores": {
+      "intent_refund_request": 0.87,
+      "intent_general_support": 0.11,
+      "intent_chitchat": 0.02
+    },
+    "explanationRefs": [
+      "explanation-trace://holmes/support-intent-req-1842/rule-trace",
+      "evidence://sherlock/support-intent-req-1842/phrase-spans"
+    ],
+    "modelOutput": {
+      "outputId": "model-output://support-intent-req-1842",
+      "proposalRef": "proposal://claims/customer-request-1842/refund-request",
+      "admissionStatus": "proposal"
+    },
+    "outputClaimRefs": [
+      "claim://sociosphere/customer-request-1842/refund-request"
+    ],
+    "claimClassEvaluations": [
+      {
+        "claimClassRef": "claim-class://sociosphere/customer-support/refund-request",
+        "evaluationReportRef": "evaluation-report://socioprophet/text-classifier@2.4.0/intent-claims"
+      }
+    ],
+    "confidence": 0.87,
+    "uncertainty": 0.13,
+    "policyDecisionRefs": [
+      "policy-decision://guardrail-fabric/claim-admission/support-intent-req-1842/review_required"
+    ]
+  }
+}

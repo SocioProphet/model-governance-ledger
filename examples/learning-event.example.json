@@ -1,0 +1,18 @@
+{
+  "apiVersion": "ledger.socioprophet.dev/v1",
+  "kind": "LearningEvent",
+  "metadata": {
+    "recordId": "ledger://model-governance/learning-event/text-classifier-2026-05-01",
+    "createdAt": "2026-05-01T11:00:00Z"
+  },
+  "spec": {
+    "inferenceTraceRef": "ledger://model-governance/inference-trace/support-intent-req-1842",
+    "driftEventRef": "ledger://model-governance/drift-event/text-classifier-2026-05-01",
+    "trainingRunRef": "ledger://model-governance/training-run/text-classifier-2026-05-01",
+    "datasetManifestRef": "dataset-manifest://socioprophet/support-intents@2026-04-28",
+    "action": "queue_retraining_candidate",
+    "policyDecisionRefs": [
+      "policy-decision://guardrail-fabric/model-learning/text-classifier-2.4.0/retrain-approved"
+    ]
+  }
+}
