@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "model-governance-ledger.trustops-receipt-ledger-record.v0.1",
+  "recordType": "TrustOpsReceiptLedgerRecord",
+  "record_id": "trustops-receipt-ledger-record:raw-sensitive-invalid",
+  "subject_ref": "functional-service://demo/claims-extractor",
+  "subject_kind": "functional-service",
+  "trustops_receipt_ref": "trustops-receipt:raw-sensitive-invalid",
+  "receipt_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "receipt_class": "robustness",
+  "runner_ref": "runner://prophet-platform/trustops-art-runner/art-smoke",
+  "policy_decision_ref": "policy-decision://trustops/art-smoke/block-001",
+  "policy_decision": "block",
+  "evidence_refs": [
+    "raw-email-body:customer@example.com:private-message",
+    "evidence://trustops/art-smoke/metrics-raw-invalid"
+  ],
+  "redaction_summary": {
+    "raw_sensitive_data_stored": true,
+    "redacted_fields": [],
+    "sensitive_data_policy_ref": "policy://trustops/no-raw-sensitive-data-v0.1"
+  },
+  "data_boundary": {
+    "boundary_ref": "data-boundary://synthetic-only",
+    "regulated_data": true,
+    "customer_controlled_data": true,
+    "personal_data": true,
+    "raw_data_exported": true
+  },
+  "provenance_refs": ["manifest://functional-service/demo/claims-extractor"],
+  "factsheet_refs": [],
+  "promotion_refs": [],
+  "rollback_refs": [],
+  "revocation_refs": [],
+  "waiver_refs": [],
+  "control_plane_boundary": {
+    "ledger_only": true,
+    "runtime_action_performed": false,
+    "authority_mutation_performed": false,
+    "allowed_control_refs": ["SocioProphet/guardrail-fabric#13"]
+  },
+  "recorded_at": "2026-05-26T21:31:00Z",
+  "labels": {
+    "issue": "SocioProphet/model-governance-ledger#11",
+    "fixture": "raw-sensitive-invalid"
+  }
+}
