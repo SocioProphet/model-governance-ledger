@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "model-governance-ledger.trustops-receipt-ledger-record.v0.1",
+  "recordType": "TrustOpsReceiptLedgerRecord",
+  "record_id": "trustops-receipt-ledger-record:art-smoke-001",
+  "subject_ref": "functional-service://demo/claims-extractor",
+  "subject_kind": "functional-service",
+  "trustops_receipt_ref": "trustops-receipt:art-smoke-001",
+  "receipt_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "receipt_class": "robustness",
+  "runner_ref": "runner://prophet-platform/trustops-art-runner/art-smoke",
+  "policy_decision_ref": "policy-decision://trustops/art-smoke/pass-001",
+  "policy_decision": "pass",
+  "evidence_refs": [
+    "evidence://trustops/art-smoke/summary-001",
+    "evidence://trustops/art-smoke/metrics-001"
+  ],
+  "redaction_summary": {
+    "raw_sensitive_data_stored": false,
+    "redacted_fields": [],
+    "sensitive_data_policy_ref": "policy://trustops/no-raw-sensitive-data-v0.1"
+  },
+  "data_boundary": {
+    "boundary_ref": "data-boundary://synthetic-only",
+    "regulated_data": false,
+    "customer_controlled_data": false,
+    "personal_data": false,
+    "raw_data_exported": false
+  },
+  "provenance_refs": [
+    "manifest://functional-service/demo/claims-extractor",
+    "ci-run://prophet-platform/trustops-art-smoke/001"
+  ],
+  "factsheet_refs": [
+    "factsheet://trustops/art-smoke/claims-extractor/001"
+  ],
+  "promotion_refs": [],
+  "rollback_refs": [],
+  "revocation_refs": [],
+  "waiver_refs": [],
+  "control_plane_boundary": {
+    "ledger_only": true,
+    "runtime_action_performed": false,
+    "authority_mutation_performed": false,
+    "allowed_control_refs": [
+      "SocioProphet/guardrail-fabric#13",
+      "SocioProphet/agent-registry#17"
+    ]
+  },
+  "recorded_at": "2026-05-26T21:30:00Z",
+  "labels": {
+    "issue": "SocioProphet/model-governance-ledger#11",
+    "fixture": "trustops-art-smoke-ledger-record"
+  }
+}
