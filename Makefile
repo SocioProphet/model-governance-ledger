@@ -1,10 +1,19 @@
-.PHONY: validate validate-v0 test release-dry-run
+.PHONY: validate validate-v0 validate-trustops-receipts test release-dry-run
 
-validate: validate-v0
+validate: validate-v0 validate-trustops-receipts
 	python3 tools/validate_ledger_examples.py
 
 validate-v0:
 	python3 tools/check_record_v0.py
+
+validate-trustops-receipts:
+	python3 -m json.tool schemas/trustops-receipt-ledger-record.v0.1.schema.json >/dev/null
+	python3 -m json.tool examples/trustops-receipt-ledger-record.example.json >/dev/null
+	python3 -m json.tool examples/trustops-receipt-ledger-record.raw-sensitive.invalid.json >/dev/null
+	python3 -m json.tool examples/trustops-receipt-ledger-record.control-plane.invalid.json >/dev/null
+	python3 tools/validate_trustops_receipt_ledger_record.py examples/trustops-receipt-ledger-record.example.json
+	! python3 tools/validate_trustops_receipt_ledger_record.py examples/trustops-receipt-ledger-record.raw-sensitive.invalid.json
+	! python3 tools/validate_trustops_receipt_ledger_record.py examples/trustops-receipt-ledger-record.control-plane.invalid.json
 
 test:
 	python3 -m pytest -q tools/tests

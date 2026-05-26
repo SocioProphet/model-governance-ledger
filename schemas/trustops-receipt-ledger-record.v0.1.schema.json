@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/model-governance-ledger/trustops-receipt-ledger-record.v0.1.schema.json",
+  "title": "TrustOpsReceiptLedgerRecord v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "recordType",
+    "record_id",
+    "subject_ref",
+    "subject_kind",
+    "trustops_receipt_ref",
+    "receipt_digest",
+    "receipt_class",
+    "runner_ref",
+    "policy_decision_ref",
+    "policy_decision",
+    "evidence_refs",
+    "redaction_summary",
+    "data_boundary",
+    "provenance_refs",
+    "factsheet_refs",
+    "control_plane_boundary",
+    "recorded_at"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "model-governance-ledger.trustops-receipt-ledger-record.v0.1"},
+    "recordType": {"const": "TrustOpsReceiptLedgerRecord"},
+    "record_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "subject_kind": {
+      "type": "string",
+      "enum": ["model", "adapter", "dataset", "service", "agent", "rag-package", "knowledge-base", "functional-service"]
+    },
+    "trustops_receipt_ref": {"type": "string", "pattern": "^trustops-receipt:"},
+    "receipt_digest": {"type": "string", "pattern": "^sha256:"},
+    "receipt_class": {
+      "type": "string",
+      "enum": ["robustness", "fairness", "explanation", "uncertainty", "ranking-fairness", "rag-trust", "dataset-risk", "agent-trust", "reasoning-failure"]
+    },
+    "runner_ref": {"type": "string", "minLength": 1},
+    "policy_decision_ref": {"type": "string", "minLength": 1},
+    "policy_decision": {
+      "type": "string",
+      "enum": ["pass", "warn", "require-review", "quarantine", "block", "rollback", "revoke"]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "redaction_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_sensitive_data_stored", "redacted_fields", "sensitive_data_policy_ref"],
+      "properties": {
+        "raw_sensitive_data_stored": {"const": false},
+        "redacted_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "sensitive_data_policy_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "data_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundary_ref", "regulated_data", "customer_controlled_data", "personal_data", "raw_data_exported"],
+      "properties": {
+        "boundary_ref": {"type": "string", "minLength": 1},
+        "regulated_data": {"type": "boolean"},
+        "customer_controlled_data": {"type": "boolean"},
+        "personal_data": {"type": "boolean"},
+        "raw_data_exported": {"const": false}
+      }
+    },
+    "provenance_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "factsheet_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "promotion_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "rollback_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "revocation_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "waiver_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "control_plane_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ledger_only", "runtime_action_performed", "authority_mutation_performed", "allowed_control_refs"],
+      "properties": {
+        "ledger_only": {"const": true},
+        "runtime_action_performed": {"const": false},
+        "authority_mutation_performed": {"const": false},
+        "allowed_control_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "recorded_at": {"type": "string", "minLength": 1},
+    "labels": {"type": "object", "additionalProperties": {"type": "string"}}
+  }
+}

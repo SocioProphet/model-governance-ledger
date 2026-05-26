@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "model-governance-ledger.trustops-receipt-ledger-record.v0.1",
+  "recordType": "TrustOpsReceiptLedgerRecord",
+  "record_id": "trustops-receipt-ledger-record:control-plane-invalid",
+  "subject_ref": "agent://demo/agent-alpha",
+  "subject_kind": "agent",
+  "trustops_receipt_ref": "trustops-receipt:agent-alpha-revoke-001",
+  "receipt_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "receipt_class": "agent-trust",
+  "runner_ref": "runner://prophet-platform/trustops-agent-trust/smoke",
+  "policy_decision_ref": "policy-decision://trustops/agent-alpha/revoke-001",
+  "policy_decision": "revoke",
+  "evidence_refs": ["evidence://trustops/agent-alpha/tool-abuse-001"],
+  "redaction_summary": {
+    "raw_sensitive_data_stored": false,
+    "redacted_fields": ["prompt", "tool_args"],
+    "sensitive_data_policy_ref": "policy://trustops/no-raw-sensitive-data-v0.1"
+  },
+  "data_boundary": {
+    "boundary_ref": "data-boundary://synthetic-only",
+    "regulated_data": false,
+    "customer_controlled_data": false,
+    "personal_data": false,
+    "raw_data_exported": false
+  },
+  "provenance_refs": ["manifest://agent/demo/agent-alpha"],
+  "factsheet_refs": [],
+  "promotion_refs": [],
+  "rollback_refs": [],
+  "revocation_refs": ["revocation://agent-alpha/tool-grants/revoke-001"],
+  "waiver_refs": [],
+  "control_plane_boundary": {
+    "ledger_only": false,
+    "runtime_action_performed": true,
+    "authority_mutation_performed": true,
+    "allowed_control_refs": ["SocioProphet/agent-registry#17"]
+  },
+  "recorded_at": "2026-05-26T21:32:00Z",
+  "labels": {
+    "issue": "SocioProphet/model-governance-ledger#11",
+    "fixture": "control-plane-invalid"
+  }
+}
