@@ -1,0 +1,76 @@
+{
+  "apiVersion": "model-governance.socioprophet.ai/v0.1",
+  "kind": "FraudDecisionLedgerRecord",
+  "metadata": {
+    "recordId": "urn:socioprophet:fraud-ledger:invalid:benchmark-production",
+    "createdAt": "2026-05-29T13:31:00Z",
+    "capabilityRef": "fraud-decision-intelligence-control-plane",
+    "doctrineRef": "SocioProphet/ProCybernetica:docs/capabilities/fraud-decision-intelligence-control-plane.md"
+  },
+  "spec": {
+    "modelCard": {
+      "modelRef": "model://fraud/public-benchmark-only/lgbm-v0",
+      "modelFamily": "gradient-boosted-decision-tree",
+      "decisionScope": "invalid benchmark-only production claim",
+      "humanImpactingUse": true,
+      "scoreInterpretation": "risk_signal_not_proof"
+    },
+    "benchmarkRecord": {
+      "benchmarkRefs": ["benchmark://public-fraud/kaggle-only"],
+      "metrics": ["auc"],
+      "productionValidationClaim": "not_claimed"
+    },
+    "featureHealthRecords": [
+      {
+        "featureName": "benchmark_feature",
+        "availability": "public benchmark only",
+        "missingnessStatus": "unknown",
+        "missingnessDelta": null,
+        "leakageRisk": "unknown",
+        "operationalAvailability": "unknown",
+        "recommendedHandling": "investigate"
+      }
+    ],
+    "labelProvenanceRecords": [
+      {
+        "labelRef": "label://fraud/public-benchmark/weak",
+        "labelValue": "fraud",
+        "labelSource": "public-benchmark",
+        "confidence": 0.5,
+        "availableAtDecisionTime": false,
+        "reversible": true
+      }
+    ],
+    "residualFraudLift": {
+      "incumbentCaught": 0,
+      "incumbentMissed": 0,
+      "modelOnlyCaught": 0,
+      "ruleOnlyCaught": 0,
+      "bothCaught": 0,
+      "neitherCaught": 0,
+      "falsePositivesByControlPath": {"model": 0}
+    },
+    "thresholdSimulation": {
+      "simulationRef": "simulation://fraud/invalid/none",
+      "reviewCapacityRef": "capacity://fraud/invalid/none",
+      "requiresHumanReview": false
+    },
+    "driftMonitoring": {
+      "driftMonitorRef": "monitor://fraud/invalid/none",
+      "adversarialDisplacementMonitorRef": "monitor://fraud/invalid/none",
+      "monitoringRequired": false
+    },
+    "claimBoundaries": {
+      "modelScoreBoundary": "risk_signal_not_proof",
+      "benchmarkBoundary": "not_production_validation",
+      "labelBoundary": "requires_provenance",
+      "humanImpactBoundary": "requires_policy_authorization"
+    },
+    "promotion": {
+      "promotionState": "approved",
+      "requiresApproval": false,
+      "approvalRef": null,
+      "productionReadinessClaim": "approved_with_policy_receipt"
+    }
+  }
+}
