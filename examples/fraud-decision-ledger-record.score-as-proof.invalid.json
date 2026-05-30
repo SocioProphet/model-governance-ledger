@@ -1,0 +1,67 @@
+{
+  "apiVersion": "model-governance.socioprophet.ai/v0.1",
+  "kind": "FraudDecisionLedgerRecord",
+  "metadata": {
+    "recordId": "urn:socioprophet:fraud-ledger:invalid:score-as-proof",
+    "createdAt": "2026-05-29T13:32:00Z",
+    "capabilityRef": "fraud-decision-intelligence-control-plane",
+    "doctrineRef": "SocioProphet/ProCybernetica:docs/capabilities/fraud-decision-intelligence-control-plane.md"
+  },
+  "spec": {
+    "modelCard": {
+      "modelRef": "model://fraud/invalid/score-proof-v0",
+      "modelFamily": "gradient-boosted-decision-tree",
+      "decisionScope": "invalid score as fraud proof",
+      "humanImpactingUse": true,
+      "scoreInterpretation": "risk_signal_not_proof"
+    },
+    "benchmarkRecord": {
+      "benchmarkRefs": ["benchmark://public-fraud/example"],
+      "metrics": ["precision"],
+      "productionValidationClaim": "not_claimed"
+    },
+    "featureHealthRecords": [
+      {
+        "featureName": "risk_score",
+        "availability": "public-synthetic",
+        "missingnessStatus": "stable",
+        "missingnessDelta": 0,
+        "leakageRisk": "low",
+        "operationalAvailability": "available-at-decision-time",
+        "recommendedHandling": "include"
+      }
+    ],
+    "labelProvenanceRecords": [],
+    "residualFraudLift": {
+      "incumbentCaught": 0,
+      "incumbentMissed": 1,
+      "modelOnlyCaught": 1,
+      "ruleOnlyCaught": 0,
+      "bothCaught": 0,
+      "neitherCaught": 0,
+      "falsePositivesByControlPath": {"model": 0}
+    },
+    "thresholdSimulation": {
+      "simulationRef": "simulation://fraud/invalid/score-proof",
+      "reviewCapacityRef": "capacity://fraud/invalid/score-proof",
+      "requiresHumanReview": false
+    },
+    "driftMonitoring": {
+      "driftMonitorRef": "monitor://fraud/invalid/score-proof",
+      "adversarialDisplacementMonitorRef": "monitor://fraud/invalid/score-proof",
+      "monitoringRequired": true
+    },
+    "claimBoundaries": {
+      "modelScoreBoundary": "risk_signal_not_proof",
+      "benchmarkBoundary": "not_production_validation",
+      "labelBoundary": "requires_provenance",
+      "humanImpactBoundary": "requires_policy_authorization"
+    },
+    "promotion": {
+      "promotionState": "approved",
+      "requiresApproval": true,
+      "approvalRef": null,
+      "productionReadinessClaim": "not_claimed"
+    }
+  }
+}
