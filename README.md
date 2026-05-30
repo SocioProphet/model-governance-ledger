@@ -49,14 +49,41 @@ make validate
 make test
 ```
 
+## Fraud Decision Intelligence ledger contracts
+
+Fraud Decision Intelligence records keep fraud models, benchmarks, feature-health evidence, labels, residual-fraud lift, threshold simulations, and drift monitors inside a governed ledger boundary.
+
+Contracts:
+
+```text
+schemas/fraud-decision-ledger-record.v0.1.schema.json
+examples/fraud-decision-ledger-record.example.json
+examples/fraud-decision-ledger-record.benchmark-production.invalid.json
+examples/fraud-decision-ledger-record.score-as-proof.invalid.json
+```
+
+Validation:
+
+```bash
+make validate-fraud-decision-ledger
+```
+
+Core invariants:
+
+- Model scores are risk signals, not proof of fraud.
+- Public benchmarks and Kaggle-style metrics are not production validation.
+- Confirmed fraud labels require provenance.
+- Human-impacting use requires policy authorization and approval evidence.
+- Material feature-health issues require governed handling.
+
 ## Boundary
 
 | Layer | Responsibility |
 |---|---|
 | `SourceOS-Linux/sourceos-model-carry` | Carries local model profiles and service references. |
 | `SociOS-Linux/socios` | Opt-in orchestration for training/tuning workflows. |
-| `SocioProphet/model-governance-ledger` | Consent, dataset lineage, eval receipts, promotion, rollback, revocation, and factsheets. |
-| `SocioProphet/model-router` | Routes to base local model, personal adapter/model, or hosted fallback under policy. |
+| `SocioProphet/model-governance-ledger` | Consent, dataset lineage, eval receipts, promotion, rollback, revocation, fraud model governance, benchmark boundaries, feature-health records, label provenance, residual-lift records, and factsheets. |
+| `SocioProphet/model-router` | Routes to base local model, personal adapter/model, fraud scoring candidate, or hosted fallback under policy. |
 | `SocioProphet/sherlock-search` | Produces retrieval/evidence references used by explanation traces. |
 | `SocioProphet/holmes` | Produces reasoning/explanation trace references consumed by inference traces. |
 | `SocioProphet/guardrail-fabric` | Produces policy decisions that gate claim admission and model lifecycle actions. |
@@ -72,3 +99,7 @@ make test
 - No model promotion without evaluation receipts.
 - No tuned artifact activation without approval.
 - Revocation must disable tuned artifacts and remove training data where policy requires it.
+- No fraud model score as proof of fraud.
+- No public benchmark as production fraud validation.
+- No confirmed fraud label without provenance.
+- No human-impacting fraud use without policy authorization.
