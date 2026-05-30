@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/model-governance/fraud-decision-ledger-record.v0.1.schema.json",
+  "title": "FraudDecisionLedgerRecord",
+  "description": "Governance ledger record for fraud model cards, benchmark records, feature health, label provenance, residual-fraud lift, threshold simulation, drift monitoring, and production-readiness non-claim boundaries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": { "const": "model-governance.socioprophet.ai/v0.1" },
+    "kind": { "const": "FraudDecisionLedgerRecord" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordId", "createdAt", "capabilityRef", "doctrineRef"],
+      "properties": {
+        "recordId": { "type": "string", "pattern": "^urn:socioprophet:fraud-ledger:" },
+        "createdAt": { "type": "string" },
+        "capabilityRef": { "const": "fraud-decision-intelligence-control-plane" },
+        "doctrineRef": { "type": "string" },
+        "ontogenesisModuleRef": { "type": "string" }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modelCard",
+        "benchmarkRecord",
+        "featureHealthRecords",
+        "labelProvenanceRecords",
+        "residualFraudLift",
+        "thresholdSimulation",
+        "driftMonitoring",
+        "claimBoundaries",
+        "promotion"
+      ],
+      "properties": {
+        "modelCard": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["modelRef", "modelFamily", "decisionScope", "humanImpactingUse", "scoreInterpretation"],
+          "properties": {
+            "modelRef": { "type": "string" },
+            "modelFamily": { "type": "string" },
+            "decisionScope": { "type": "string" },
+            "humanImpactingUse": { "type": "boolean" },
+            "scoreInterpretation": { "type": "string", "enum": ["risk_signal_not_proof"] }
+          }
+        },
+        "benchmarkRecord": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["benchmarkRefs", "metrics", "productionValidationClaim"],
+          "properties": {
+            "benchmarkRefs": { "type": "array", "items": { "type": "string" } },
+            "metrics": { "type": "array", "items": { "type": "string" } },
+            "productionValidationClaim": { "type": "string", "enum": ["not_claimed", "separate_validation_required"] }
+          }
+        },
+        "featureHealthRecords": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["featureName", "availability", "missingnessStatus", "leakageRisk", "operationalAvailability", "recommendedHandling"],
+            "properties": {
+              "featureName": { "type": "string" },
+              "availability": { "type": "string" },
+              "missingnessStatus": { "type": "string", "enum": ["stable", "material-delta", "unknown", "not-applicable"] },
+              "missingnessDelta": { "type": ["number", "null"] },
+              "leakageRisk": { "type": "string", "enum": ["low", "medium", "high", "unknown"] },
+              "operationalAvailability": { "type": "string", "enum": ["available-at-decision-time", "not-available-at-decision-time", "unknown"] },
+              "recommendedHandling": { "type": "string", "enum": ["include", "exclude", "impute", "monitor", "quarantine", "investigate"] }
+            }
+          }
+        },
+        "labelProvenanceRecords": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["labelRef", "labelValue", "labelSource", "confidence", "availableAtDecisionTime", "reversible"],
+            "properties": {
+              "labelRef": { "type": "string" },
+              "labelValue": { "type": "string" },
+              "labelSource": { "type": "string" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "availableAtDecisionTime": { "type": "boolean" },
+              "reversible": { "type": "boolean" }
+            }
+          }
+        },
+        "residualFraudLift": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["incumbentCaught", "incumbentMissed", "modelOnlyCaught", "ruleOnlyCaught", "bothCaught", "neitherCaught", "falsePositivesByControlPath"],
+          "properties": {
+            "incumbentCaught": { "type": "integer", "minimum": 0 },
+            "incumbentMissed": { "type": "integer", "minimum": 0 },
+            "modelOnlyCaught": { "type": "integer", "minimum": 0 },
+            "ruleOnlyCaught": { "type": "integer", "minimum": 0 },
+            "bothCaught": { "type": "integer", "minimum": 0 },
+            "neitherCaught": { "type": "integer", "minimum": 0 },
+            "falsePositivesByControlPath": {
+              "type": "object",
+              "additionalProperties": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "thresholdSimulation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["simulationRef", "reviewCapacityRef", "requiresHumanReview"],
+          "properties": {
+            "simulationRef": { "type": "string" },
+            "reviewCapacityRef": { "type": "string" },
+            "requiresHumanReview": { "type": "boolean" }
+          }
+        },
+        "driftMonitoring": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["driftMonitorRef", "adversarialDisplacementMonitorRef", "monitoringRequired"],
+          "properties": {
+            "driftMonitorRef": { "type": "string" },
+            "adversarialDisplacementMonitorRef": { "type": "string" },
+            "monitoringRequired": { "type": "boolean" }
+          }
+        },
+        "claimBoundaries": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["modelScoreBoundary", "benchmarkBoundary", "labelBoundary", "humanImpactBoundary"],
+          "properties": {
+            "modelScoreBoundary": { "type": "string", "enum": ["risk_signal_not_proof"] },
+            "benchmarkBoundary": { "type": "string", "enum": ["not_production_validation"] },
+            "labelBoundary": { "type": "string", "enum": ["requires_provenance"] },
+            "humanImpactBoundary": { "type": "string", "enum": ["requires_policy_authorization"] }
+          }
+        },
+        "promotion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["promotionState", "requiresApproval", "productionReadinessClaim"],
+          "properties": {
+            "promotionState": { "type": "string", "enum": ["not-promoted", "candidate", "approved", "rejected", "rollback-ready", "deprecated"] },
+            "requiresApproval": { "type": "boolean" },
+            "approvalRef": { "type": ["string", "null"] },
+            "productionReadinessClaim": { "type": "string", "enum": ["not_claimed", "approved_with_policy_receipt"] }
+          }
+        }
+      }
+    }
+  }
+}
