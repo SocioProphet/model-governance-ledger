@@ -1,0 +1,92 @@
+{
+  "apiVersion": "model-governance.socioprophet.ai/v0.1",
+  "kind": "FraudDecisionLedgerRecord",
+  "metadata": {
+    "recordId": "urn:socioprophet:fraud-ledger:example:001",
+    "createdAt": "2026-05-29T13:30:00Z",
+    "capabilityRef": "fraud-decision-intelligence-control-plane",
+    "doctrineRef": "SocioProphet/ProCybernetica:docs/capabilities/fraud-decision-intelligence-control-plane.md",
+    "ontogenesisModuleRef": "SocioProphet/ontogenesis:Domains/fraud-decision-intelligence.ttl"
+  },
+  "spec": {
+    "modelCard": {
+      "modelRef": "model://fraud/public-synthetic/lgbm-risk-signal-v0",
+      "modelFamily": "gradient-boosted-decision-tree",
+      "decisionScope": "public-synthetic residual-fraud analysis only",
+      "humanImpactingUse": false,
+      "scoreInterpretation": "risk_signal_not_proof"
+    },
+    "benchmarkRecord": {
+      "benchmarkRefs": [
+        "benchmark://public-fraud/ieee-cis-pattern-reference",
+        "benchmark://public-fraud/credit-card-imbalance-pattern-reference"
+      ],
+      "metrics": ["precision_at_review_capacity", "residual_fraud_lift", "false_positive_cost"],
+      "productionValidationClaim": "not_claimed"
+    },
+    "featureHealthRecords": [
+      {
+        "featureName": "entity_velocity_24h",
+        "availability": "derived from public-synthetic event history",
+        "missingnessStatus": "stable",
+        "missingnessDelta": 0.0,
+        "leakageRisk": "low",
+        "operationalAvailability": "available-at-decision-time",
+        "recommendedHandling": "include"
+      },
+      {
+        "featureName": "dealer_age",
+        "availability": "industry-adapter feature with known missingness risk",
+        "missingnessStatus": "material-delta",
+        "missingnessDelta": 0.25,
+        "leakageRisk": "medium",
+        "operationalAvailability": "unknown",
+        "recommendedHandling": "investigate"
+      }
+    ],
+    "labelProvenanceRecords": [
+      {
+        "labelRef": "label://fraud/public-synthetic/investigation-001",
+        "labelValue": "confirmed_fraud",
+        "labelSource": "public-synthetic-investigation-outcome",
+        "confidence": 0.93,
+        "availableAtDecisionTime": false,
+        "reversible": true
+      }
+    ],
+    "residualFraudLift": {
+      "incumbentCaught": 306,
+      "incumbentMissed": 499,
+      "modelOnlyCaught": 54,
+      "ruleOnlyCaught": 306,
+      "bothCaught": 0,
+      "neitherCaught": 445,
+      "falsePositivesByControlPath": {
+        "model": 74,
+        "legacy_rule": 0
+      }
+    },
+    "thresholdSimulation": {
+      "simulationRef": "simulation://fraud/public-synthetic/threshold-review-capacity-001",
+      "reviewCapacityRef": "capacity://fraud/public-synthetic/manual-review-queue-001",
+      "requiresHumanReview": true
+    },
+    "driftMonitoring": {
+      "driftMonitorRef": "monitor://fraud/public-synthetic/feature-drift-001",
+      "adversarialDisplacementMonitorRef": "monitor://fraud/public-synthetic/control-displacement-001",
+      "monitoringRequired": true
+    },
+    "claimBoundaries": {
+      "modelScoreBoundary": "risk_signal_not_proof",
+      "benchmarkBoundary": "not_production_validation",
+      "labelBoundary": "requires_provenance",
+      "humanImpactBoundary": "requires_policy_authorization"
+    },
+    "promotion": {
+      "promotionState": "candidate",
+      "requiresApproval": true,
+      "approvalRef": null,
+      "productionReadinessClaim": "not_claimed"
+    }
+  }
+}
