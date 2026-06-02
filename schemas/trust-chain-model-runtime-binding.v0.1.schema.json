@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.dev/model-governance-ledger/trust-chain-model-runtime-binding.v0.1.schema.json",
+  "title": "Trust Chain Model Runtime Binding v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_id", "record_type", "model_artifact_ref", "runtime_asset_ref", "dataset_artifact_refs", "eval_receipt_refs", "trust_chain_refs", "promotion", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "record_id": {"type": "string", "pattern": "^model-ledger:trust-chain-runtime-binding:"},
+    "record_type": {"const": "TrustChainModelRuntimeBinding"},
+    "model_artifact_ref": {"type": "string", "minLength": 1},
+    "runtime_asset_ref": {"type": "string", "pattern": "^runtime-asset://"},
+    "dataset_artifact_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "eval_receipt_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "trust_chain_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_decision_ref", "guardrail_decision_ref", "agentplane_supply_chain_validation_ref", "runtime_receipt_ref", "admission_decision_ref"],
+      "properties": {
+        "policy_decision_ref": {"type": ["string", "null"]},
+        "guardrail_decision_ref": {"type": ["string", "null"]},
+        "agentplane_supply_chain_validation_ref": {"type": ["string", "null"]},
+        "runtime_receipt_ref": {"type": ["string", "null"]},
+        "admission_decision_ref": {"type": ["string", "null"]}
+      }
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "decision", "requires_runtime_evidence", "requires_eval_receipts"],
+      "properties": {
+        "environment": {"enum": ["preview", "staging", "production"]},
+        "decision": {"enum": ["allowed", "blocked", "review_required"]},
+        "requires_runtime_evidence": {"type": "boolean"},
+        "requires_eval_receipts": {"type": "boolean"},
+        "approval_ref": {"type": ["string", "null"]}
+      }
+    },
+    "remediation": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["step_id", "authority", "required_before_promotion", "instruction"], "properties": {"step_id": {"type": "string"}, "authority": {"type": "string"}, "required_before_promotion": {"type": "boolean"}, "instruction": {"type": "string"}}}},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  }
+}
