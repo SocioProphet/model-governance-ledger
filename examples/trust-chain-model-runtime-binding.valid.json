@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1",
+  "record_id": "model-ledger:trust-chain-runtime-binding:demo-model-001",
+  "record_type": "TrustChainModelRuntimeBinding",
+  "model_artifact_ref": "model://local/small-language@0.1.0",
+  "runtime_asset_ref": "runtime-asset://lattice-forge/prophet-python-ml@0.1.0",
+  "dataset_artifact_refs": [
+    "dataset://demo/summarization-eval@0.1.0"
+  ],
+  "eval_receipt_refs": [
+    "eval://demo/summarization-quality@0.1.0",
+    "receipt://agentplane/eval/summarization-quality-001"
+  ],
+  "trust_chain_refs": {
+    "policy_decision_ref": "policy://trust-chain/dependency-admission/regulated-enterprise-production",
+    "guardrail_decision_ref": "guardrail:decision:trust-chain-runtime-allow-001",
+    "agentplane_supply_chain_validation_ref": "agentplane:supply-chain-validation-artifact:runtime-asset-demo-001",
+    "runtime_receipt_ref": "runtime-receipt://trust-chain/demo-runtime-asset-001",
+    "admission_decision_ref": "trust-chain:admit-artifact-response:demo-runtime-asset-001:allowed"
+  },
+  "promotion": {
+    "environment": "production",
+    "decision": "allowed",
+    "requires_runtime_evidence": true,
+    "requires_eval_receipts": true,
+    "approval_ref": "human://socioprophet/model-release-authority"
+  },
+  "remediation": [],
+  "non_claims": [
+    "This binding does not run training jobs.",
+    "This binding does not treat benchmark scores as production validation.",
+    "This binding records that model promotion depends on runtime Trust Chain evidence and evaluation receipts."
+  ]
+}
