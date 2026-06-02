@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1",
+  "record_id": "model-ledger:trust-chain-runtime-binding:demo-model-002",
+  "record_type": "TrustChainModelRuntimeBinding",
+  "model_artifact_ref": "model://local/small-language@0.1.0",
+  "runtime_asset_ref": "runtime-asset://lattice-forge/legacy-python-ml@0.0.3",
+  "dataset_artifact_refs": [
+    "dataset://demo/summarization-eval@0.1.0"
+  ],
+  "eval_receipt_refs": [
+    "eval://demo/summarization-quality@0.1.0"
+  ],
+  "trust_chain_refs": {
+    "policy_decision_ref": "policy://trust-chain/dependency-admission/regulated-enterprise-production",
+    "guardrail_decision_ref": "guardrail:decision:trust-chain-runtime-deny-001",
+    "agentplane_supply_chain_validation_ref": null,
+    "runtime_receipt_ref": null,
+    "admission_decision_ref": "trust-chain:admit-artifact-response:legacy-python-ml:denied"
+  },
+  "promotion": {
+    "environment": "production",
+    "decision": "blocked",
+    "requires_runtime_evidence": true,
+    "requires_eval_receipts": true,
+    "approval_ref": null
+  },
+  "remediation": [
+    {
+      "step_id": "repair-runtime-substrate",
+      "authority": "SocioProphet/lattice-forge",
+      "required_before_promotion": true,
+      "instruction": "Patch or replace the denied RuntimeAsset and emit fresh runtime Trust Chain evidence."
+    },
+    {
+      "step_id": "rerun-agentplane-supply-chain-validation",
+      "authority": "SocioProphet/agentplane",
+      "required_before_promotion": true,
+      "instruction": "Produce SupplyChainValidationArtifact, replay evidence, and runtime receipt after runtime repair."
+    }
+  ],
+  "non_claims": [
+    "This binding is expected to remain blocked until runtime evidence exists.",
+    "This binding does not allow model promotion from benchmark score or model factsheet alone."
+  ]
+}
