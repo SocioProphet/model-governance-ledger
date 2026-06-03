@@ -1,14 +1,15 @@
 schema_version: effective-authority/v0.1
 repo: SocioProphet/model-governance-ledger
 zone: A
-owner: Model Governance Ledger lane
+owner: Model Governance Ledger evidence lane
 maturity: draft
 
 authority_classes:
-  - signed_ledger
-  - model_route_provenance
+  - signed_evidence_ledger
   - policy_provenance
-  - tool_grant_provenance
+  - model_route_provenance
+  - tool_grant_ledger
+  - transparency_instrument
 observation_channels: []
 control_channels: []
 egress_classes:
@@ -16,7 +17,8 @@ egress_classes:
   - policy
   - schema
 background_workers: []
-runtime_subjects: []
+runtime_subjects:
+  - ledger_validator
 connector_surfaces: []
 policy_sources:
   - repo
