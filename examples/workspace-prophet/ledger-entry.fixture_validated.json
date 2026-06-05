@@ -1,0 +1,68 @@
+{
+  "schema_version": "0.1.0",
+  "ledger_entry_id": "ledger_workspace_prophet_e2e_fixture_validated",
+  "entry_type": "workspace_prophet_e2e_fixture",
+  "readiness_state": "fixture_validated",
+  "production_ready": false,
+  "operation_ref": "op_readonly_diagnostics_demo",
+  "capability_ref": "cap_local_command_readonly_demo",
+  "receipt_ref": "receipt_workspace_diagnostics_completed_demo",
+  "claim_ref": "claim_workspace_readonly_diagnostics_completed_demo",
+  "evidence_thread_ref": "thread_workspace_readonly_diagnostics_completed_demo",
+  "sherlock_packet_ref": "workspace-prophet-search-packet-v0",
+  "sociosphere_readiness_ref": "sociosphere:readiness:workspace-prophet",
+  "validated_evidence": [
+    {
+      "repo": "SocioProphet/prophet-core-contracts",
+      "command": "make validate",
+      "observed_state": "passed",
+      "evidence_class": "local_user_observed"
+    },
+    {
+      "repo": "SocioProphet/prophet-platform",
+      "command": "python3 tools/validate_workspace_prophet_membrane_e2e.py",
+      "observed_state": "passed",
+      "evidence_class": "local_user_observed"
+    },
+    {
+      "repo": "SocioProphet/prophet-platform",
+      "command": "python3 tools/validate_workspace_prophet_claim_projection.py",
+      "observed_state": "passed",
+      "evidence_class": "local_user_observed"
+    },
+    {
+      "repo": "SocioProphet/sherlock-search",
+      "command": "python3 scripts/validate_workspace_prophet_search_packet.py",
+      "observed_state": "passed",
+      "evidence_class": "local_user_observed"
+    },
+    {
+      "repo": "SocioProphet/sociosphere",
+      "command": "python3 tools/validate_workspace_prophet_readiness.py",
+      "observed_state": "passed",
+      "evidence_class": "local_user_observed"
+    }
+  ],
+  "non_claims": [
+    "Does not certify production readiness.",
+    "Does not execute a production action.",
+    "Does not certify live policy engine integration.",
+    "Does not certify durable production ledger persistence.",
+    "Does not certify Sociosphere SVF runtime execution."
+  ],
+  "source_refs": [
+    "SocioProphet/prophet-core-contracts:schemas/action-receipt.schema.json",
+    "SocioProphet/prophet-core-contracts:schemas/claim-record.schema.json",
+    "SocioProphet/prophet-core-contracts:schemas/evidence-thread.schema.json",
+    "SocioProphet/prophet-platform:contracts/workspace-prophet/e2e/action-receipt-workspace-operation-prophet-v0.json",
+    "SocioProphet/prophet-platform:contracts/workspace-prophet/e2e/claim-projection-workspace-operation-prophet-v0.json",
+    "SocioProphet/sherlock-search:examples/workspace-prophet/search-packet.example.json",
+    "SocioProphet/sociosphere:registry/workspace-prophet-readiness.yaml"
+  ],
+  "metadata": {
+    "e2e_id": "E2E-WP-PROPHET-0001",
+    "ledger_scope": "fixture_conformance",
+    "next_gate": "runtime_receipt_persistence"
+  },
+  "created_at": "2026-06-05T17:55:00Z"
+}
