@@ -39,3 +39,7 @@ make test
 ## Current boundary
 
 This repository must not store model weights, datasets, secrets, credentials, raw private prompts, or compliance-certification claims.
+
+## workspace-prophet promotion path
+
+The `workspace-prophet-ledger-entry.v0.1.schema.json` is the current fixture-validation target. A promotion record schema (v0.2) is gated on `readiness_state: runtime_observed` with CI-observed evidence on at least 3 items. See [workspace-prophet-ledger-entry-promotion-audit.md](workspace-prophet-ledger-entry-promotion-audit.md) for the full assessment and v0.2 design note.
